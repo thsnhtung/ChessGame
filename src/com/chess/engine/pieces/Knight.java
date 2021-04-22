@@ -10,15 +10,16 @@ import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.*;
+import com.chess.engine.pieces.Piece.PieceType;
 import com.chess.engine.board.Tile;
 
 public class Knight extends Piece
 {
 	final static int[] CANDIDATE_MOVE_COORDINATE = { -17, -15, -10, -6, 6, 10, 15, 17 };
 	
-	Knight(int piecePosition, Alliance pieceAlliance) 
+	public Knight(final Alliance pieceAlliance, final int piecePosition) 
 	{
-		super(piecePosition, pieceAlliance);
+		super(PieceType.KNIGHT , piecePosition, pieceAlliance);
 	}
 
 	@Override
@@ -80,5 +81,11 @@ public class Knight extends Piece
 	{
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == 17 || candidateOffset == -6 || 
 													candidateOffset == 10 || candidateOffset == -15 );
+	}
+	
+	@Override
+	public String toString()
+	{
+		return PieceType.KNIGHT.toString() ; 
 	}
 }

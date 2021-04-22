@@ -51,6 +51,12 @@ public abstract class Tile
 		}
 		
 		@Override
+		public String toString()
+		{
+			return "_" ;
+		}
+		
+		@Override
 		public boolean isTileOccupied()
 		{
 			return false ; 
@@ -70,6 +76,12 @@ public abstract class Tile
 		public Piece getPiece()
 		{
 			return this.PieceOnTile ; 
+		}
+		
+		@Override
+		public String toString()
+		{
+			return this.getPiece().getPieceAlliance().isBlack() ? this.getPiece().toString().toLowerCase() : this.getPiece().toString() ; 
 		}
 		
 		@Override
