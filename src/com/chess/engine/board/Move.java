@@ -1,4 +1,4 @@
-package com.chess.engine.board;
+	package com.chess.engine.board;
 
 import com.chess.engine.pieces.Piece;
 
@@ -15,12 +15,20 @@ public abstract class Move
 		this.destinationCoordinate = destinationCoordinate;
 	}
 	
+	public abstract Board execute();
+	
 	public static final class MajorMove extends Move
 	{
 
 		public MajorMove(Board board, Piece movedPiece, int destinationCoordinate) 
 		{
 			super(board, movedPiece, destinationCoordinate);
+		}
+
+		@Override
+		public Board execute() 
+		{
+			return null;
 		}		
 	}
 	
@@ -35,7 +43,17 @@ public abstract class Move
 			super(board, movedPiece, destinationCoordinate);
 			this.AttackPiece = AttackPiece ; 
 		}
+		@Override
+		public Board execute() 
+		{
+			return null;
+		}
 		
+	}
+
+	public int getDestinationCoordinate() 
+	{
+		return this.destinationCoordinate;
 	}
 	
 

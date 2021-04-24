@@ -1,10 +1,5 @@
 package com.chess.engine.board;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.chess.engine.player.PLayer;
 import com.chess.engine.Alliance;
@@ -12,6 +7,8 @@ import com.chess.engine.pieces.Piece;
 import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.WhitePlayer;
 import com.chess.engine.pieces.*;
+
+
 public class Board 
 {
 	private final List<Tile> gameBoard; 
@@ -20,18 +17,20 @@ public class Board
 	
 	private final WhitePlayer whitePlayer;
 	private final BlackPlayer blackPlayer;
+	private final PLayer currentPlayer;
 	
-	private Board (Builder builder)
+	private Board (final Builder builder)
 	{
 		this.gameBoard = createGameBoard(builder) ;  
 		this.whitePieces = calculateActivePiece(this.gameBoard, Alliance.WHITE) ; 
-		this.blackPieces = calculateActivePiece(this.gameBoard, Alliance.BLACK) ; 
+		this.blackPieces = calculateActivePiece(this.gameBoard, Alliance.BLACK) ; 	
 		
 		final Collection<Move> whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces) ; 
 		final Collection<Move> blackStandardLegalMoves = calculateLegalMoves(this.blackPieces) ; 
 		
 		this.whitePlayer = new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
 		this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
+		this.currentPlayer = builder.nextMoveMaker.choosePlayer(this.whitePlayer, this.blackPlayer);
 	}
 	
 	public Collection<Piece> getBlackPiece()

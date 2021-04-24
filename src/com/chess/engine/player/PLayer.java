@@ -1,6 +1,9 @@
 package com.chess.engine.player;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
@@ -13,12 +16,28 @@ public abstract class PLayer
 	protected final Board board;
 	protected final King playerKing;
 	protected final Collection<Move> legalMoves;
+	private final boolean isInCheck ; 
+	
 	
 	PLayer(final Board board, final Collection<Move> legalMoves, final Collection<Move> opponentMoves)
 	{
 		this.board = board ;
 		this.playerKing = establishKing();
 		this.legalMoves = legalMoves;
+		this.isInCheck = !PLayer.calculateAttackOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty() ; 
+	}
+
+	private static Collection<Move> calculateAttackOnTile(Integer piecePosition, Collection<Move> opponentMoves) 
+	{
+		final List<Move> attackMoves = new ArrayList<>(); 
+		for (final Move move : attackMoves)
+		{
+			if (piecePosition == move.getDestinationCoordinate());
+			{
+				attackMoves.add(move);
+			}
+		}
+		return Collections.unmodifiableCollection(attackMoves);
 	}
 
 	private King establishKing() 
@@ -44,12 +63,25 @@ public abstract class PLayer
 	
 	public boolean isInCheckMate()
 	{
-		return false;
+		return this.isInCheck && !hasEscapeMove();
 	}
 	
+	protected boolean hasEscapeMove() 
+	{
+		for (final Move move : this.legalMoves)
+		{
+			final MoveTransition transition = makeMove(move);
+			if (transition.getMoveStatus().isDone())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean isInStaleMate()
 	{
-		return false;
+		return !this.isInCheck && !hasEscapeMove();
 	}
 	
 	public boolean isCastled()
@@ -60,5 +92,10 @@ public abstract class PLayer
 	public MoveTransition makeMove(final Move move)
 	{
 		return null;
+	}
+	
+	public boolean isInCheck()
+	{
+		return this.isInCheck ;
 	}
 }
