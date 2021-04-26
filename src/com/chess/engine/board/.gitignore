@@ -7,3 +7,12 @@
 /Tile$OccupiedTile.class
 /Tile.class
 /Board$Builder.class
+/Move$PawnMove.class
+/Move$PawnAttackMove.class
+/Move$PawnEnPassantAttackMove.class
+/Move$PawnJump.class
+/Move$CastleMove.class
+/Move$KingSideCastleMove.class
+/Move$QueenSideCastleMove.class
+/Move$NullMove.class
+/Move$MoveFactory.class

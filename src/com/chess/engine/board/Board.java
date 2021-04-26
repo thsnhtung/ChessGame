@@ -1,9 +1,7 @@
 package com.chess.engine.board;
 import java.util.*;
-
 import com.chess.engine.player.PLayer;
 import com.chess.engine.Alliance;
-import com.chess.engine.pieces.Piece;
 import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.WhitePlayer;
 import com.chess.engine.pieces.*;
@@ -160,11 +158,23 @@ public class Board
 		return this.whitePlayer ; 
 	}
 	
+	public PLayer currentPlayer()
+	{
+		return this.currentPlayer;
+	}
+	
+	public Collection<Move> getAllLegalMoves()
+	{
+		List<Move> combinedStream = (List<Move>) this.whitePlayer().getLegalMoves();
+		combinedStream.addAll(this.blackPlayer().getLegalMoves());
+		return Collections.unmodifiableList(combinedStream);
+	}
+	
 	public static class Builder
 	{
 		Map <Integer, Piece> BoardConfig;
 		Alliance nextMoveMaker ; 
-		
+		Pawn enPassantPawn ;
 		public Builder()
 		{
 			BoardConfig = new HashMap<>() ;
@@ -185,6 +195,12 @@ public class Board
 		public Board build()
 		{
 			return new Board(this);
+		}
+
+		public void setEnPassant(Pawn enPassantPawn) 
+		{
+			this.enPassantPawn = enPassantPawn ;
+			
 		}
 	}
 }

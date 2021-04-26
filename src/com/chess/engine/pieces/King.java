@@ -78,4 +78,11 @@ public class King extends Piece
 		return PieceType.KING.toString() ; 
 	}
 
+	@Override
+	public King movePiece(final Move move) 
+	{
+		// TODO Auto-generated method stub
+		return new King(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+	}
+
 }

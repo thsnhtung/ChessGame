@@ -53,7 +53,7 @@ public enum Alliance
 		}
 
 		@Override
-		public PLayer choosePlayer(WhitePlayer whitePlayer, BlackPlayer blackPlayer) 
+		public PLayer choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer) 
 		{
 			return blackPlayer;
 		}	
@@ -63,5 +63,5 @@ public enum Alliance
 	public abstract boolean isWhite();
 	public abstract boolean isBlack();
 	
-	public abstract PLayer choosePlayer(WhitePlayer whitePlayer, BlackPlayer blackPlayer);
+	public abstract PLayer choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer);
 }

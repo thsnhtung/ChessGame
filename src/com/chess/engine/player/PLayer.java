@@ -18,6 +18,15 @@ public abstract class PLayer
 	protected final Collection<Move> legalMoves;
 	private final boolean isInCheck ; 
 	
+	public King getPlayerKing()
+	{
+		return playerKing;
+	}
+	
+	public Collection<Move> getLegalMoves()
+	{
+		return this.legalMoves;
+	}
 	
 	PLayer(final Board board, final Collection<Move> legalMoves, final Collection<Move> opponentMoves)
 	{
@@ -56,7 +65,7 @@ public abstract class PLayer
 	public abstract Alliance getAlliance();
 	public abstract PLayer getOpponent() ;
 	
-	public boolean isLegal (final Move move)
+	public boolean isMoveLegal (final Move move)
 	{
 		return this.legalMoves.contains(move); 
 	}
@@ -91,7 +100,20 @@ public abstract class PLayer
 	
 	public MoveTransition makeMove(final Move move)
 	{
-		return null;
+		if (!isMoveLegal(move))
+		{
+			return new MoveTransition(this.board, move, MoveStatus.ILLEGAL_MOVE);
+		}
+		
+		final Board transitionBoard = move.execute();
+		final Collection<Move> kingAttacks = PLayer.calculateAttackOnTile(transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
+				transitionBoard.currentPlayer().getLegalMoves());
+		
+		if (!kingAttacks.isEmpty()) 
+		{
+			return new MoveTransition(this.board, move, MoveStatus.LEAVE_PLAYER_IN_CHECK);
+		}
+		return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
 	}
 	
 	public boolean isInCheck()

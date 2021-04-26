@@ -81,4 +81,10 @@ public class Queen extends Piece
 	{
 		return PieceType.QUEEN.toString() ; 
 	}
+
+	@Override
+	public Queen movePiece(final Move move) {
+		// TODO Auto-generated method stub
+		return new Queen(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+	}
 }

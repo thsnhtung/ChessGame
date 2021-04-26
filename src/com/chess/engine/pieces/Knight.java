@@ -88,4 +88,11 @@ public class Knight extends Piece
 	{
 		return PieceType.KNIGHT.toString() ; 
 	}
+
+	@Override
+	public Knight movePiece(final Move move) 
+	{
+		// TODO Auto-generated method stub
+		return new Knight(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+	}
 }
