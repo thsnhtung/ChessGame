@@ -9,7 +9,6 @@ import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
-import com.chess.engine.pieces.Piece.PieceType;
 
 public class Pawn extends Piece
 {
@@ -36,8 +35,8 @@ public class Pawn extends Piece
 				legalMoves.add(new Move.MajorMove(board, this, CandidateDestinationCoordinate));
 			}
 			else if (CurrentCandidateOffset == 16 && this.isFirstMove() && 
-					(BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceAlliance().isBlack()) || 
-					(BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceAlliance().isWhite()))
+					(BoardUtils.SEVENTH_RANK[this.piecePosition] && this.getPieceAlliance().isBlack()) || 
+					(BoardUtils.SECOND_RANK[this.piecePosition] && this.getPieceAlliance().isWhite()))
 			{
 				final int behindCandidateDestinationCoordinate = this.piecePosition + (this.pieceAlliance.getDirection() * 8) ;
 				if ( !board.getTile(behindCandidateDestinationCoordinate).isTileOccupied() && 

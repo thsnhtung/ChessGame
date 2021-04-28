@@ -75,8 +75,7 @@ public class WhitePlayer extends PLayer
 				
 				if (rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove())
 				{
-					if(PLayer.calculateAttackOnTile(57, opponentsLegals).isEmpty()
-					&& PLayer.calculateAttackOnTile(58, opponentsLegals).isEmpty()
+					if(PLayer.calculateAttackOnTile(58, opponentsLegals).isEmpty()
 					&& PLayer.calculateAttackOnTile(59, opponentsLegals).isEmpty()
 					&& rookTile.getPiece().getPieceType().isRook())
 					{

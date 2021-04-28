@@ -163,11 +163,13 @@ public class Board
 		return this.currentPlayer;
 	}
 	
+	
 	public Collection<Move> getAllLegalMoves()
 	{
-		List<Move> combinedStream = (List<Move>) this.whitePlayer().getLegalMoves();
-		combinedStream.addAll(this.blackPlayer().getLegalMoves());
-		return Collections.unmodifiableList(combinedStream);
+		Collection<Move> combined = new ArrayList<>() ;
+		combined.addAll(this.whitePlayer().getLegalMoves());
+		combined.addAll(this.blackPlayer().getLegalMoves());
+		return Collections.unmodifiableCollection(combined);
 	}
 	
 	public static class Builder

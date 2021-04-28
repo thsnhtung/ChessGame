@@ -85,8 +85,7 @@ public class BlackPlayer extends PLayer
 				
 				if (rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove())
 				{
-					if(PLayer.calculateAttackOnTile(1, opponentsLegals).isEmpty()
-					&& PLayer.calculateAttackOnTile(2, opponentsLegals).isEmpty()
+					if(PLayer.calculateAttackOnTile(2, opponentsLegals).isEmpty()
 					&& PLayer.calculateAttackOnTile(3, opponentsLegals).isEmpty()
 					&& rookTile.getPiece().getPieceType().isRook())
 					{

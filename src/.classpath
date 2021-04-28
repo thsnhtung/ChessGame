@@ -6,10 +6,5 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Asus/Downloads/guava-18.0.jar" sourcepath="C:/Users/Asus/Downloads/guava-18.0-sources.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="output" path=""/>
 </classpath>
