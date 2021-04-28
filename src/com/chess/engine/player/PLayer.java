@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
@@ -11,12 +12,30 @@ import com.chess.engine.board.Move;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Piece;
 
+
+
+
 public abstract class PLayer 
 {
 	protected final Board board;
 	protected final King playerKing;
 	protected final Collection<Move> legalMoves;
 	private final boolean isInCheck ; 
+	
+	
+	
+	PLayer(final Board board, Collection<Move> legalMoves, Collection<Move> opponentMoves  )
+	{
+		this.board = board ;
+		this.playerKing = establishKing();	
+		Collection<Move> combined = new ArrayList<>() ;
+		combined.addAll(legalMoves);
+		combined.addAll(calculateKingCastles(legalMoves, opponentMoves));
+
+		this.legalMoves = Collections.unmodifiableCollection(combined);
+		
+		this.isInCheck = !PLayer.calculateAttackOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty() ; 
+	}
 	
 	public King getPlayerKing()
 	{
@@ -27,16 +46,8 @@ public abstract class PLayer
 	{
 		return this.legalMoves;
 	}
-	
-	PLayer(final Board board, final Collection<Move> legalMoves, final Collection<Move> opponentMoves)
-	{
-		this.board = board ;
-		this.playerKing = establishKing();
-		this.legalMoves = legalMoves;
-		this.isInCheck = !PLayer.calculateAttackOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty() ; 
-	}
 
-	private static Collection<Move> calculateAttackOnTile(Integer piecePosition, Collection<Move> opponentMoves) 
+	protected static Collection<Move> calculateAttackOnTile(final Integer piecePosition, final Collection<Move> opponentMoves) 
 	{
 		final List<Move> attackMoves = new ArrayList<>(); 
 		for (final Move move : attackMoves)
@@ -61,9 +72,6 @@ public abstract class PLayer
 		throw  new RuntimeException("Should not reach here! King is missing..");
 	}
 
-	public abstract Collection<Piece> getActivePieces();
-	public abstract Alliance getAlliance();
-	public abstract PLayer getOpponent() ;
 	
 	public boolean isMoveLegal (final Move move)
 	{
@@ -120,4 +128,10 @@ public abstract class PLayer
 	{
 		return this.isInCheck ;
 	}
+	
+	public abstract Collection<Piece> getActivePieces();
+	public abstract Alliance getAlliance();
+	public abstract PLayer getOpponent() ;
+	protected abstract Collection<Move> calculateKingCastles(final Collection <Move> playerLegals, final Collection<Move> opponentsLegals);
+	
 }
