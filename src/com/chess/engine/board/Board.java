@@ -1,5 +1,8 @@
 package com.chess.engine.board;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.chess.engine.player.PLayer;
 import com.chess.engine.Alliance;
 import com.chess.engine.player.BlackPlayer;
@@ -16,13 +19,18 @@ public class Board
 	private final WhitePlayer whitePlayer;
 	private final BlackPlayer blackPlayer;
 	private final PLayer currentPlayer;
+	private final Pawn enPassantPawn; 
+	
 	
 	private Board (final Builder builder)
 	{
 		this.gameBoard = createGameBoard(builder) ;  
-		this.whitePieces = calculateActivePiece(this.gameBoard, Alliance.WHITE) ; 
-		this.blackPieces = calculateActivePiece(this.gameBoard, Alliance.BLACK) ; 	
+		this.whitePieces = calculateActivePieces(this.gameBoard, Alliance.WHITE) ; 
+		this.blackPieces = calculateActivePieces(this.gameBoard, Alliance.BLACK) ; 	
+
+	
 		
+		this.enPassantPawn = builder.enPassantPawn;
 		final Collection<Move> whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces) ; 
 		final Collection<Move> blackStandardLegalMoves = calculateLegalMoves(this.blackPieces) ; 
 		
@@ -30,6 +38,7 @@ public class Board
 		this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
 		this.currentPlayer = builder.nextMoveMaker.choosePlayer(this.whitePlayer, this.blackPlayer);
 	}
+	
 	
 	public Collection<Piece> getBlackPiece()
 	{
@@ -40,6 +49,18 @@ public class Board
 	{
 		return this.whitePieces ; 
 	}
+	
+	public Pawn getEnPassantPawn()
+	{
+		return this.enPassantPawn;
+	}
+	
+	
+	public Collection<Piece> getAllPieces() 
+	{
+        return Stream.concat(this.whitePieces.stream(),
+                             this.blackPieces.stream()).collect(Collectors.toList());
+    }
 	
 	@Override
 	public String toString()
@@ -60,27 +81,23 @@ public class Board
 
 	private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) 
 	{
-		final List<Move> legalMoves = new ArrayList<>() ; 
-		for (final Piece piece : pieces)
-		{
-			legalMoves.addAll(piece.CalculateLegalMoves(this)) ; 
+		
+		final List<Move> legalMoves = new ArrayList<>();
+		for(final Piece piece : pieces) {
+			legalMoves.addAll(piece.CalculateLegalMoves(this));
 		}
- 		return Collections.unmodifiableList(legalMoves);
+		return Collections.unmodifiableList(legalMoves);
 	}
 
-	private static Collection<Piece> calculateActivePiece(final List<Tile> gameBoard,
-														  final Alliance white) 
+	private static Collection<Piece> calculateActivePieces(final List<Tile> gameBoard, final Alliance alliance) 
 	{
-		final List<Piece> activePieces = new ArrayList<>() ; 
+		final List<Piece> activePieces = new ArrayList<>();
 		
-		for (final Tile tile : gameBoard)
-		{
-			if (tile.isTileOccupied())
-			{
+		for(final Tile tile : gameBoard) {
+			if (tile.isTileOccupied()) {
 				final Piece piece = tile.getPiece();
-				if (piece.getPieceAlliance() == white)
-				{
-					activePieces.add(piece) ; 
+				if (piece.getPieceAlliance() == alliance) {
+					activePieces.add(piece);
 				}
 			}
 		}
@@ -165,13 +182,11 @@ public class Board
 	
 	
 	public Collection<Move> getAllLegalMoves()
-	{
-		Collection<Move> combined = new ArrayList<>() ;
-		combined.addAll(this.whitePlayer().getLegalMoves());
-		combined.addAll(this.blackPlayer().getLegalMoves());
-		return Collections.unmodifiableCollection(combined);
+	{	
+		return Stream.concat(this.whitePlayer.getLegalMoves().stream(),
+                this.blackPlayer.getLegalMoves().stream()).collect(Collectors.toList());
 	}
-	
+
 	public static class Builder
 	{
 		Map <Integer, Piece> BoardConfig;

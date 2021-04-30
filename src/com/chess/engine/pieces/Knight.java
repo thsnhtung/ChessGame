@@ -19,7 +19,13 @@ public class Knight extends Piece
 	
 	public Knight(final Alliance pieceAlliance, final int piecePosition) 
 	{
-		super(PieceType.KNIGHT , piecePosition, pieceAlliance);
+		super(PieceType.KNIGHT , piecePosition, pieceAlliance, true);
+	}
+	
+	
+	public Knight(final Alliance pieceAlliance, final int piecePosition, final boolean isFirstMove) 
+	{
+		super(PieceType.KNIGHT , piecePosition, pieceAlliance, isFirstMove);
 	}
 
 	@Override
@@ -52,7 +58,7 @@ public class Knight extends Piece
 					final Alliance pieceAlliance = PieceAtDestination.getPieceAlliance(); 
 					if(this.pieceAlliance != pieceAlliance)
 					{
-						legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, PieceAtDestination));
+						legalMoves.add(new MajorAttackMove(board, this, candidateDestinationCoordinate, PieceAtDestination));
 					} 
 				}
 			}

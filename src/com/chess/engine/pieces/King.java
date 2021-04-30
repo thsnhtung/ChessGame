@@ -10,7 +10,6 @@ import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
-import com.chess.engine.board.Move.AttackMove;
 import com.chess.engine.board.Move.MajorMove;
 
 public class King extends Piece
@@ -18,7 +17,12 @@ public class King extends Piece
 	private final static int[] CANDIDATE_MOVE_COORDINATE = {-9, -8, -7, -1, 1, 7, 8, 9};
 	public King(final Alliance pieceAlliance, final int piecePosition) 
 	{
-		super(PieceType.KING, piecePosition, pieceAlliance);
+		super(PieceType.KING, piecePosition, pieceAlliance, true);
+	}
+	
+	public King(final Alliance pieceAlliance, final int piecePosition, final boolean isFirstMove) 
+	{
+		super(PieceType.KING, piecePosition, pieceAlliance, isFirstMove);
 	}
 
 	@Override
@@ -50,7 +54,7 @@ public class King extends Piece
 					final Alliance pieceAlliance = PieceAtDestination.getPieceAlliance(); 
 					if(this.pieceAlliance != pieceAlliance)
 					{
-						legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, PieceAtDestination));
+						legalMoves.add(new Move.MajorAttackMove(board, this, candidateDestinationCoordinate, PieceAtDestination));
 					} 
 				}
 			}
@@ -81,7 +85,6 @@ public class King extends Piece
 	@Override
 	public King movePiece(final Move move) 
 	{
-		// TODO Auto-generated method stub
 		return new King(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
 	}
 

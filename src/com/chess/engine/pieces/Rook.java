@@ -10,9 +10,8 @@ import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
-import com.chess.engine.board.Move.AttackMove;
+import com.chess.engine.board.Move.MajorAttackMove;
 import com.chess.engine.board.Move.MajorMove;
-import com.chess.engine.pieces.Piece.PieceType;
 
 public class Rook extends Piece
 {
@@ -20,11 +19,16 @@ public class Rook extends Piece
 	final static int[] CANDIDATE_MOVE_COORDINATE = {-8, -1, 1, 8};
 	
 	
-	public Rook (Alliance pieceAlliance, int piecePosition) 
+	public Rook (final Alliance pieceAlliance, final int piecePosition) 
 	{
-		super(PieceType.ROOK , piecePosition, pieceAlliance);
+		super(PieceType.ROOK , piecePosition, pieceAlliance, true);
 	}
-
+	
+	public Rook(final Alliance pieceAlliance, final int piecePosition, final boolean isFirstMove)
+	{
+		super(PieceType.ROOK , piecePosition, pieceAlliance, isFirstMove);
+	}
+	
 	@Override
 	public Collection<Move> CalculateLegalMoves(Board board) 
 	{
@@ -56,7 +60,7 @@ public class Rook extends Piece
 						final Alliance pieceAlliance = PieceAtDestination.getPieceAlliance(); 
 						if(this.pieceAlliance != pieceAlliance)
 						{
-							legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, PieceAtDestination));
+							legalMoves.add(new MajorAttackMove(board, this, candidateDestinationCoordinate, PieceAtDestination));
 						} 
 						break ;
 					}

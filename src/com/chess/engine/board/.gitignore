@@ -16,3 +16,8 @@
 /Move$QueenSideCastleMove.class
 /Move$NullMove.class
 /Move$MoveFactory.class
+/Move$MajorAttackMove.class
+/Move$CastleMove$KingSideCastleMove.class
+/Move$CastleMove$MoveFactory.class
+/Move$CastleMove$NullMove.class
+/Move$CastleMove$QueenSideCastleMove.class

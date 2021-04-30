@@ -30,6 +30,13 @@ public enum Alliance
 		{			
 			return whitePlayer;
 		}
+
+		@Override
+		public Integer getOppositeDirection() 
+		{
+
+			return 1;
+		}
 		
 	},
 	BLACK
@@ -56,6 +63,12 @@ public enum Alliance
 		public PLayer choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer) 
 		{
 			return blackPlayer;
+		}
+
+		@Override
+		public Integer getOppositeDirection() 
+		{
+			return -1;
 		}	
 	};
 	
@@ -64,4 +77,5 @@ public enum Alliance
 	public abstract boolean isBlack();
 	
 	public abstract PLayer choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer);
+	public abstract Integer getOppositeDirection();
 }

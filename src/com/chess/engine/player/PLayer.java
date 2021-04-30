@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
@@ -26,12 +29,9 @@ public abstract class PLayer
 	{
 		this.board = board ;
 		this.playerKing = establishKing();	
-		Collection<Move> combined = new ArrayList<>() ;
-		combined.addAll(legalMoves);
-		combined.addAll(calculateKingCastles(legalMoves, opponentMoves));
 
-		this.legalMoves = Collections.unmodifiableCollection(combined);
-		
+		this.legalMoves = Collections.unmodifiableCollection(Stream.concat(legalMoves.stream(),
+				calculateKingCastles(legalMoves, opponentMoves).stream()).collect(Collectors.toList()));
 		this.isInCheck = !PLayer.calculateAttackOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty() ; 
 	}
 	
@@ -112,11 +112,13 @@ public abstract class PLayer
 		}
 		
 		final Board transitionBoard = move.execute();
-		final Collection<Move> kingAttacks = PLayer.calculateAttackOnTile(transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
-				transitionBoard.currentPlayer().getLegalMoves());
+		
+		final Collection<Move> kingAttacks = PLayer.calculateAttackOnTile(transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(), transitionBoard.currentPlayer().getLegalMoves());
+		System.out.println("King attack moves: " + kingAttacks.toString());
 		
 		if (!kingAttacks.isEmpty()) 
 		{
+			System.out.println("fasdfasdfasdf");
 			return new MoveTransition(this.board, move, MoveStatus.LEAVE_PLAYER_IN_CHECK);
 		}
 		return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
