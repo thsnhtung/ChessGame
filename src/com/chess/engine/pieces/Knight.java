@@ -10,7 +10,6 @@ import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.*;
-import com.chess.engine.pieces.Piece.PieceType;
 import com.chess.engine.board.Tile;
 
 public class Knight extends Piece

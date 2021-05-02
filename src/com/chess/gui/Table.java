@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -16,10 +17,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -64,6 +68,8 @@ public class Table
 	private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
 	private final static Dimension TILE_PANEL_DIMENSION = new  Dimension(10, 10);
 	
+	private static final Table INSTANCE = new Table();
+	
 	public Table()
 	{
 		this.gameFrame = new JFrame("ChessGame");
@@ -83,11 +89,31 @@ public class Table
 		this.gameFrame.add(this.takenPiecesPanel, BorderLayout.WEST);
 		this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 		this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
-
+		center(this.gameFrame);
         this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.gameFrame.setVisible(true);
 	}
 	
+	
+	public static Table get() 
+	{
+        return INSTANCE;
+    }
+	
+	private MoveLog getMoveLog() 
+	{
+        return this.moveLog;
+    }
+	
+	private static void center(final JFrame frame) 
+	{
+        final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        final int w = frame.getSize().width;
+        final int h = frame.getSize().height;
+        final int x = (dim.width - w) / 2;
+        final int y = (dim.height - h) / 2;
+        frame.setLocation(x, y);
+    }
 	
 	private JMenu createPreferencesMenu()
 	{
@@ -109,7 +135,7 @@ public class Table
 		
 		preferencesMenu.addSeparator();
 		
-		final JCheckBoxMenuItem legalMoveHighLighterCheckBox = new JCheckBoxMenuItem("Highlight Legal Moves", false);
+		final JCheckBoxMenuItem legalMoveHighLighterCheckBox = new JCheckBoxMenuItem("Highlight Legal Moves", this.highLightLegalMoves);
 		
 		
 		legalMoveHighLighterCheckBox.addActionListener(new ActionListener()
@@ -173,6 +199,24 @@ public class Table
 		return fileMenu;
 	}
 	
+	
+//	private void undoAllMoves() 
+//	{
+////        for(int i = Table.get().getMoveLog().size() - 1; i >= 0; i--) {
+////            final Move lastMove = Table.get().getMoveLog().removeMove(Table.get().getMoveLog().size() - 1);
+////            this.chessBoard = this.chessBoard.currentPlayer().unMakeMove(lastMove).getToBoard();
+////        }
+////        this.computerMove = null;
+////        Table.get().getMoveLog().clear();
+////        Table.get().getGameHistoryPanel().redo(chessBoard, Table.get().getMoveLog());
+////        Table.get().getTakenPiecesPanel().redo(Table.get().getMoveLog());
+////        Table.get().getBoardPanel().drawBoard(chessBoard);
+////        Table.get().getDebugPanel().redo();
+//    }
+	
+	
+	
+
 	public static class MoveLog
 	{
 		private final List<Move> moves;
@@ -230,6 +274,8 @@ public class Table
 			}
 			
 			setPreferredSize(BOARD_PANEL_DIMENSION);
+			setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+			setBackground(Color.decode("#FB4726"));
 			validate();
 		}
 
@@ -273,8 +319,6 @@ public class Table
 						{
 							if (javax.swing.SwingUtilities.isRightMouseButton(e))
 							{
-								System.out.print("Right \t");
-								System.out.println(tileId);
 								sourceTile = null ;
 								destinationTile = null ;
 								humanMovedPiece = null;
@@ -282,8 +326,6 @@ public class Table
 							}
 							else if (javax.swing.SwingUtilities.isLeftMouseButton(e))
 							{
-								System.out.print("Left \t");
-								System.out.println(tileId);
 								if (sourceTile == null)
 								{
 									sourceTile = chessBoard.getTile(tileId);
@@ -362,6 +404,9 @@ public class Table
 		{
 			if (humanMovedPiece != null && humanMovedPiece.getPieceAlliance() == board.currentPlayer().getAlliance())
 			{
+				if (humanMovedPiece.getPieceType().isKing())
+					return Collections.unmodifiableCollection(Stream.concat(humanMovedPiece.CalculateLegalMoves(board).stream(),
+							board.currentPlayer().calculateKingCastles(board.currentPlayer().getOpponent().getLegalMoves()).stream()).collect(Collectors.toList()));
 				return humanMovedPiece.CalculateLegalMoves(board);
 			}
 			return Collections.emptyList();
@@ -371,11 +416,24 @@ public class Table
 		{
 			assignTileColor();
 			assignTilePieceIcon(board);
+			highlightTileBorder(board);
 			highlightLegals(board);
 			validate();
 			repaint();
 			
 		}
+		
+		private void highlightTileBorder(final Board board) 
+		{
+            if(humanMovedPiece != null &&
+               humanMovedPiece.getPieceAlliance() == board.currentPlayer().getAlliance() &&
+               humanMovedPiece.getPiecePosition() == this.tileId) {
+                setBorder(BorderFactory.createLineBorder(Color.cyan));
+            } else {
+                setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            }
+        }
+		
 		private void assignTileColor() 
 		{
 			if (BoardUtils.EIGHTH_RANK[this.tileId]

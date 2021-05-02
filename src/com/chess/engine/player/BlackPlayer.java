@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
+import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
@@ -49,7 +50,7 @@ public class BlackPlayer extends PLayer
 
 
 	@Override
-	protected Collection<Move> calculateKingCastles(final Collection<Move> playerLegals, final Collection<Move> opponentsLegals) 
+	public Collection<Move> calculateKingCastles(final Collection<Move> opponentsLegals) 
 	{
 		final List<Move> kingCastle = new ArrayList<>();
 		if (this.playerKing.isFirstMove() && !this.isInCheck())
@@ -68,11 +69,15 @@ public class BlackPlayer extends PLayer
 					&& PLayer.calculateAttackOnTile(6, opponentsLegals).isEmpty()
 					&& rookTile.getPiece().getPieceType().isRook())
 					{
-						kingCastle.add(new Move.KingSideCastleMove(this.board, this.playerKing, 
+						
+						if (!BoardUtils.isKingPawnTrap(this.board, this.playerKing, 12)) 
+						{
+							kingCastle.add(new Move.KingSideCastleMove(this.board, this.playerKing, 
 								   								   6, 
 								   								   (Rook)rookTile.getPiece(), 
 								   								   rookTile.getTileCoordinate(), 
-								   								   5)) ; 				
+								   								   5)) ; 	
+						}
 					}			
 				}
 			}
@@ -89,11 +94,14 @@ public class BlackPlayer extends PLayer
 					&& PLayer.calculateAttackOnTile(3, opponentsLegals).isEmpty()
 					&& rookTile.getPiece().getPieceType().isRook())
 					{
-						kingCastle.add(new Move.KingSideCastleMove(this.board, this.playerKing, 
+						if (!BoardUtils.isKingPawnTrap(this.board, this.playerKing, 12)) 
+						{
+							kingCastle.add(new Move.KingSideCastleMove(this.board, this.playerKing, 
 								                                   2, 
 								                                   (Rook)rookTile.getPiece(), 
 								                                   rookTile.getTileCoordinate(), 
 								                                   3)) ; 	
+						}
 					}
 				}
 			}

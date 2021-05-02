@@ -11,7 +11,6 @@ public enum MoveStatus
 
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return "DONE";
 		}
 	}, 
@@ -25,7 +24,6 @@ public enum MoveStatus
 
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return "ILLEGAL_MOVE";
 		}
 	}, 

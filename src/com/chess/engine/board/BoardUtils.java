@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.chess.engine.pieces.King;
+
 public class BoardUtils 
 {	
 	public static final boolean[] FIRST_COLUMN = initColumn(0);
@@ -97,5 +99,19 @@ public class BoardUtils
         return ALGEBRAIC_NOTATION.get(coordinate);
     }
 	
-	
+    public static boolean isEndGame(final Board board) 
+    {
+        return board.currentPlayer().isInCheckMate() ||
+               board.currentPlayer().isInStaleMate();
+    }
+    
+    public static boolean isKingPawnTrap(final Board board,
+            final King king,
+            final int frontTile) 
+    {
+    	final Tile tile = board.getTile(frontTile);
+    	if (tile.isTileOccupied())
+    		return tile.getPiece().getPieceType().toString() == "P" && tile.getPiece().getPieceAlliance() != king.getPieceAlliance();
+    	return false ;
+    }	
 }

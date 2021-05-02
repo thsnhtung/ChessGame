@@ -31,7 +31,7 @@ public abstract class PLayer
 		this.playerKing = establishKing();	
 
 		this.legalMoves = Collections.unmodifiableCollection(Stream.concat(legalMoves.stream(),
-				calculateKingCastles(legalMoves, opponentMoves).stream()).collect(Collectors.toList()));
+				calculateKingCastles(opponentMoves).stream()).collect(Collectors.toList()));
 		this.isInCheck = !PLayer.calculateAttackOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty() ; 
 	}
 	
@@ -48,9 +48,9 @@ public abstract class PLayer
 	protected static Collection<Move> calculateAttackOnTile(final Integer piecePosition, final Collection<Move> opponentMoves) 
 	{
 		final List<Move> attackMoves = new ArrayList<>(); 
-		for (final Move move : attackMoves)
+		for (final Move move : opponentMoves)
 		{
-			if (piecePosition == move.getDestinationCoordinate());
+			if (piecePosition == move.getDestinationCoordinate())
 			{
 				attackMoves.add(move);
 			}
@@ -113,15 +113,12 @@ public abstract class PLayer
 		
 		final Board transitionBoard = move.execute();
 		
-		final Collection<Move> kingAttacks = PLayer.calculateAttackOnTile(transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(), transitionBoard.currentPlayer().getLegalMoves());
-		System.out.println("King attack moves: " + kingAttacks.toString());
-		
-		if (!kingAttacks.isEmpty()) 
+		if (transitionBoard.currentPlayer().getOpponent().isInCheck() == true)
 		{
-			System.out.println("fasdfasdfasdf");
 			return new MoveTransition(this.board, move, MoveStatus.LEAVE_PLAYER_IN_CHECK);
 		}
-		return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
+		else
+			return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
 	}
 	
 	public boolean isInCheck()
@@ -129,9 +126,25 @@ public abstract class PLayer
 		return this.isInCheck ;
 	}
 	
+	
+	public boolean isKingSideCastleCapable() 
+	{
+        return this.playerKing.isKingSideCastleCapable();
+    }
+
+    public boolean isQueenSideCastleCapable() 
+    {
+        return this.playerKing.isQueenSideCastleCapable();
+    }
+    
+    protected boolean hasCastleOpportunities() {
+        return !this.isInCheck && !this.playerKing.isCastled() &&
+                (this.playerKing.isKingSideCastleCapable() || this.playerKing.isQueenSideCastleCapable());
+    }
+	
 	public abstract Collection<Piece> getActivePieces();
 	public abstract Alliance getAlliance();
 	public abstract PLayer getOpponent() ;
-	protected abstract Collection<Move> calculateKingCastles(final Collection <Move> playerLegals, final Collection<Move> opponentsLegals);
+	public abstract Collection<Move> calculateKingCastles(final Collection<Move> opponentsLegals);
 	
 }

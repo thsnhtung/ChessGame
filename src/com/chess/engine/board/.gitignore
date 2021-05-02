@@ -21,3 +21,4 @@
 /Move$CastleMove$MoveFactory.class
 /Move$CastleMove$NullMove.class
 /Move$CastleMove$QueenSideCastleMove.class
+/Move$PawnPromotion.class
