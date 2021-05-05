@@ -10,6 +10,7 @@ public class JChess
 		Board board = Board.createStandardBoard() ;
 		System.out.println(board) ; 
 		
-		Table table = new Table();
+		@SuppressWarnings("unused")
+		Table table = new Table(true);
 	}
 }

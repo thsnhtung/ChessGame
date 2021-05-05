@@ -68,9 +68,9 @@ public class Table
 	private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
 	private final static Dimension TILE_PANEL_DIMENSION = new  Dimension(10, 10);
 	
-	private static final Table INSTANCE = new Table();
+	private static final Table INSTANCE = new Table(false);
 	
-	public Table()
+	public Table(boolean visible)
 	{
 		this.gameFrame = new JFrame("ChessGame");
 		this.gameFrame.setLayout(new BorderLayout());
@@ -91,7 +91,7 @@ public class Table
 		this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
 		center(this.gameFrame);
         this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.gameFrame.setVisible(true);
+		this.gameFrame.setVisible(visible);
 	}
 	
 	
@@ -100,10 +100,10 @@ public class Table
         return INSTANCE;
     }
 	
-	private MoveLog getMoveLog() 
-	{
-        return this.moveLog;
-    }
+//	private MoveLog getMoveLog() 
+//	{
+//        return this.moveLog;
+//    }
 	
 	private static void center(final JFrame frame) 
 	{
