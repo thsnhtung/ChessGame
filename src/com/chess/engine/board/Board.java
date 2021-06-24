@@ -175,6 +175,7 @@ public class Board
 		return this.whitePlayer ; 
 	}
 	
+
 	public PLayer currentPlayer()
 	{
 		return this.currentPlayer;

@@ -33,6 +33,12 @@ public class WhitePlayer extends PLayer
 	{
 		return Alliance.WHITE;
 	}
+	
+	@Override
+	public String toString() 
+	{
+		return "White";
+	}
 
 	@Override
 	public PLayer getOpponent() 

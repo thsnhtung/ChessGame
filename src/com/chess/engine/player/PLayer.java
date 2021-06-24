@@ -141,6 +141,8 @@ public abstract class PLayer
         return !this.isInCheck && !this.playerKing.isCastled() &&
                 (this.playerKing.isKingSideCastleCapable() || this.playerKing.isQueenSideCastleCapable());
     }
+    
+
 	
 	public abstract Collection<Piece> getActivePieces();
 	public abstract Alliance getAlliance();

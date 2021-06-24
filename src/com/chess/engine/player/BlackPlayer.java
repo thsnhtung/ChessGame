@@ -39,7 +39,11 @@ public class BlackPlayer extends PLayer
 		return Alliance.BLACK;
 	}
 
-
+	@Override
+	public String toString() 
+	{
+		return "Black";
+	}
 
 	@Override
 	public PLayer getOpponent() 
@@ -96,7 +100,7 @@ public class BlackPlayer extends PLayer
 					{
 						if (!BoardUtils.isKingPawnTrap(this.board, this.playerKing, 12)) 
 						{
-							kingCastle.add(new Move.KingSideCastleMove(this.board, this.playerKing, 
+							kingCastle.add(new Move.QueenSideCastleMove(this.board, this.playerKing, 
 								                                   2, 
 								                                   (Rook)rookTile.getPiece(), 
 								                                   rookTile.getTileCoordinate(), 

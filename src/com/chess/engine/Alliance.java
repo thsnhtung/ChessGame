@@ -22,7 +22,6 @@ public enum Alliance
 		@Override
 		public boolean isBlack() 
 		{
-			// TODO Auto-generated method stub
 			return false;
 		}
 

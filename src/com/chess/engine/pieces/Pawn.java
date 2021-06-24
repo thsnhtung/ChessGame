@@ -5,11 +5,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.PawnMove;
+import com.chess.gui.Table;
 
 public class Pawn extends Piece
 {
@@ -140,7 +143,6 @@ public class Pawn extends Piece
 
 	public Piece getPromotionPiece() 
 	{
-		
 		return new Queen(this.pieceAlliance, this.piecePosition, false);
 	}
 

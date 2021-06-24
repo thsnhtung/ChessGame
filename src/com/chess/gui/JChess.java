@@ -1,7 +1,7 @@
 package com.chess.gui;
 
 import com.chess.engine.board.Board;
-
+import com.chess.gui.*;
 
 public class JChess 
 {
@@ -10,7 +10,6 @@ public class JChess
 		Board board = Board.createStandardBoard() ;
 		System.out.println(board) ; 
 		
-		@SuppressWarnings("unused")
-		Table table = new Table(true);
+		Table.get().show();
 	}
 }

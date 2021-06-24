@@ -116,6 +116,7 @@ public abstract class Move
 		
 		return builder.build();
 	}
+	
 
 	
 	public static final class MajorMove extends Move
