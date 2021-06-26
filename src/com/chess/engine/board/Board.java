@@ -181,6 +181,8 @@ public class Board
 		return this.currentPlayer;
 	}
 	
+
+	
 	
 	public Collection<Move> getAllLegalMoves()
 	{	
@@ -220,5 +222,10 @@ public class Board
 			this.enPassantPawn = enPassantPawn ;
 			
 		}
+		
+		public Piece getPiece(final int coordinate) 
+		{
+	        return this.BoardConfig.get(coordinate);
+	    }
 	}
 }

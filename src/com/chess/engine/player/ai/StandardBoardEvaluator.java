@@ -1,16 +1,19 @@
 package com.chess.engine.player.ai;
 
 import com.chess.engine.board.Board;
+import com.chess.engine.board.Move;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.player.PLayer;
 
 public final class StandardBoardEvaluator implements BoardEvaluator 
 {
 	
-	private static final int CHECK_BONUS = 50 ;
+	private static final int CHECK_BONUS = 45 ;
 	private static final int CHECK_MATE_BONUS = 10000;
 	private static final int DEPTH_BONUS = 100;
-	private static final int CASTLE_BONUS = 60;
+	private static final int CASTLE_BONUS = 25;
+	private final static int MOBILITY_MULTIPLIER = 5;
+	private final static int ATTACK_MULTIPLIER = 1;
 	
 	@Override
 	public int evaluate(Board board, int depth)
@@ -25,6 +28,7 @@ public final class StandardBoardEvaluator implements BoardEvaluator
 		return pieceValue(player) + 
 				mobility(player) + 
 				check(player) + 
+				attacks(player) +
 				checkMate(player, depth) + 
 				castled(player);
 		
@@ -56,8 +60,13 @@ public final class StandardBoardEvaluator implements BoardEvaluator
 
 	private static int mobility(final PLayer player) 
 	{
-		return player.getLegalMoves().size();
+		return MOBILITY_MULTIPLIER * mobilityRatio(player);
 	}
+	
+	private static int mobilityRatio(final PLayer player) 
+	{
+        return (int)((player.getLegalMoves().size() * 10.0f) / player.getOpponent().getLegalMoves().size());
+    }
 
 
 	private static int pieceValue(final PLayer player) 
@@ -71,6 +80,20 @@ public final class StandardBoardEvaluator implements BoardEvaluator
 		return pieceValueScore;
 	}
 	
+	
+	private static int attacks(final PLayer player) {
+        int attackScore = 0;
+        for(final Move move : player.getLegalMoves()) {
+            if(move.isAttack()) {
+                final Piece movedPiece = move.getMovedPiece();
+                final Piece attackedPiece = move.getAttackedPiece();
+                if(movedPiece.getPieceValue() <= attackedPiece.getPieceValue()) {
+                    attackScore++;
+                }
+            }
+        }
+        return attackScore * ATTACK_MULTIPLIER;
+    }
 	
 
 }

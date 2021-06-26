@@ -1,10 +1,12 @@
 package com.chess.engine.pieces;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.chess.engine.Alliance;

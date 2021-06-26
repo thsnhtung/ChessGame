@@ -33,7 +33,6 @@ public class MiniMax implements MoveStrategy
 		int LowestSeenValue = Integer.MAX_VALUE ;
 		int currentValue;
 		
-		System.out.println(board.currentPlayer() + " Thinking with depth = " + this.searchDepth) ; 
 		
 		//int numMoves = board.currentPlayer().getLegalMoves().size() ; 
 		
@@ -47,6 +46,7 @@ public class MiniMax implements MoveStrategy
 				currentValue = board.currentPlayer().getAlliance().isWhite() ?
 						min(moveTransition.getTransitionBoard(), this.searchDepth -1 ) : 
 						max(moveTransition.getTransitionBoard(), this.searchDepth -1);
+			
 				
 				if (board.currentPlayer().getAlliance().isWhite() && currentValue >= highestSeenValue)
 				{
@@ -106,7 +106,7 @@ public class MiniMax implements MoveStrategy
 			return this.boardEvaluator.evaluate(board, depth);
 		}
 		
-		int highestSeenValue = Integer.MAX_VALUE;
+		int highestSeenValue = Integer.MIN_VALUE;
 		
 		for (final Move move : board.currentPlayer().getLegalMoves())
 		{

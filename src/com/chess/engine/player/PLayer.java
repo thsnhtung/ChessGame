@@ -110,7 +110,6 @@ public abstract class PLayer
 		{
 			return new MoveTransition(this.board, move, MoveStatus.ILLEGAL_MOVE);
 		}
-		
 		final Board transitionBoard = move.execute();
 		
 		if (transitionBoard.currentPlayer().getOpponent().isInCheck() == true)
